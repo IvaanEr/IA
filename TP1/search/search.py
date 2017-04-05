@@ -100,10 +100,22 @@ def depthFirstSearch(problem):
     # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     # print "Start's successors:", problem.getSuccessors(problem.getStartState())
     
+    st = util.Stack()
     init_state = problem.getStartState()
-    st         = Stack()
-    actions    = []
-    
+    actions = []
+    st.push((init_state,actions))
+    recorridos = set()
+    while not st.isEmpty():
+      candidate = st.pop()
+      state, act = candidate
+        if problem.isGoalState(state):
+          return act
+        if state not in recorridos:
+          recorridos.add(state)
+          succ = problem.getSuccessors(state) # :: [((x,y) , actions, cost)]
+          
+          for i in succ
+            st.push(i[0])
 
 
 def breadthFirstSearch(problem):
