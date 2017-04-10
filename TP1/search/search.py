@@ -74,13 +74,14 @@ def search(problem, fringe):
     fringe.push(initial_candidate)
     closed_set = set()
     while not fringe.isEmpty():
-        candidate = fringe.pop()
+        candidate = fringe.pop()  
         state, actions = candidate
         if problem.isGoalState(state):
             return actions
         if state not in closed_set:
             closed_set.add(state)
             candidate_successors = problem.getSuccessors(state)
+            #dprint candidate_successors
             candidate_successors = filter(lambda x: x[0] not in closed_set, candidate_successors)
             candidate_successors = map(lambda x: (x[0], actions + [x[1]]), candidate_successors)
             for candidate in candidate_successors:
@@ -101,30 +102,41 @@ def depthFirstSearch(problem):
     # print "Start's successors:", problem.getSuccessors(problem.getStartState())
     
     st = util.Stack()
-    init_state = problem.getStartState()
-    actions = []
-    st.push((init_state,actions))
-    recorridos = set()
-    while not st.isEmpty():
-      candidate = st.pop()
-      state, act = candidate
-        if problem.isGoalState(state):
-          return act
-        if state not in recorridos:
-          recorridos.add(state)
-          succ = problem.getSuccessors(state) # :: [((x,y) , actions, cost)]
-          
-          for i in succ
-            st.push(i[0])
-
+    return search(problem,st)
 
 def breadthFirstSearch(problem):
     """
     Search the shallowest nodes in the search tree first.
     """
-
+    que = util.Queue()
+    return search(problem,que)
+    
 def uniformCostSearch(problem):
-    "Search the node of least total cost first."
+    #"Search the node of least total cost first."
+    init_state = problem.getStartState()
+    actions = []
+    candidate = (init_state,actions)
+    que = util.PriorityQueue()
+    que.push(candidate,0)
+    closed_set = set()
+
+    while not que.isEmpty():
+        cand = que.pop()
+        state,act = cand
+        #print state, act
+        if problem.isGoalState(state):
+            return act
+        if state not in closed_set:
+            closed_set.add(state)
+            successors = problem.getSuccessors(state) # [((x,y), 'south', 1)]
+            successors = filter(lambda x: x[0] not in closed_set, successors)
+            successors = map(lambda x: (x[0], act + [x[1]]), successors)
+            for candidate in successors:
+                que.push(candidate,problem.getCostOfActions(candidate[1]))
+
+
+
+
 
 def nullHeuristic(state, problem=None):
     """
