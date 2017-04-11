@@ -81,7 +81,7 @@ def search(problem, fringe):
         if state not in closed_set:
             closed_set.add(state)
             candidate_successors = problem.getSuccessors(state)
-            #dprint candidate_successors
+            #print candidate_successors
             candidate_successors = filter(lambda x: x[0] not in closed_set, candidate_successors)
             candidate_successors = map(lambda x: (x[0], actions + [x[1]]), candidate_successors)
             for candidate in candidate_successors:
@@ -145,11 +145,39 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def aStarSearch(problem, heuristic=nullHeuristic):
-    "Search the node that has the lowest combined cost and heuristic first."
+def aStarSearch(problem, heuristic): #=nullHeuristic
+    #"Search the node that has the lowest combined cost and heuristic first."
+    init_state = problem.getStartState()
+    actions = []
+    candidate = (init_state,actions)
+    que = util.PriorityQueue()
+    que.push(candidate,0)
+    closed_set = set()
+
+
+    while not que.isEmpty():
+        cand = que.pop()
+        state,act = cand
+        #print state, act
+        if problem.isGoalState(state):
+            return act
+        if state not in closed_set:
+            closed_set.add(state)
+            successors = problem.getSuccessors(state) # [((x,y), 'south', 1)]
+            successors = filter(lambda x: x[0] not in closed_set, successors)
+            successors = map(lambda x: (x[0], act + [x[1]]), successors)
+            for candidate in successors:
+                father = problem.getCostOfActions(act)+heuristic(state,problem)
+                son = problem.getCostOfActions(candidate[1])+heuristic(candidate[0],problem)
+                if son < father : #chequeo inconsistencia
+                    print "Se ha detectado inconsistencia en la heuristica"
+                    #print"son: "+str(son)+"father: "+str(father)
+                que.push(candidate,son)
 
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+
+
