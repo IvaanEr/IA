@@ -32,21 +32,28 @@ hypothesize(unknown).
 /* no diagnosis */
 /* games identification rules */
 call_of_duty :- fps,
-verify(action),verify(online).
+verify(action),online.
 
 overwatch :- fps,
-verify(moba),verify(online).
+moba.
 
-league_of_legends :- verify(moba),
-verify(online),verify(stratefy). 
+league_of_legends :- moba,
+verify(stratefy). 
+
+mass_effect :- verify(role),verify(science_fiction),verify(third_person),verify(action),verify(shooter).
 
 the_witcher_3 :- 
-verify(roll),verify(fantasy),verify(action),verify(third_person).
+verify(role),verify(fantasy),verify(action),verify(third_person).
 
 dark_souls :-
 verify(survival),verify(terror),verify(third_person).
 
-fps :- verify(first_person),verify(shooter)
+minecraft :- verify(survival)
+
+fps :- verify(first_person),verify(shooter).
+online :- verify(online),verify(multiplayer).
+moba :- online,verify(battle_arena),verify(has_minions).
+
 /* how to ask questions */
 
 ask(Question) :-
