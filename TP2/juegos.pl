@@ -1,13 +1,13 @@
 
-/* games.pro
+/* juegos.pl
 digital games identification game.
 start with ?- go.
 */
 go :- hypothesize(Game),
 write('I guess that the game is: '),
 write(Game),
-nl,
-undo.
+nl.
+
 
 /* hypotheses to be tested */
 hypothesize(call_of_duty)
@@ -22,12 +22,13 @@ hypothesize(dark_souls)
 :- dark_souls, !.
 hypothesize(minecraft)
 :- minecraft, !.
+hypothesize(agregar).
 
 /*hypothesize(penguin)
 :- penguin, !.
 hypothesize(albatross) :- albatross, !.
-hypothesize(unknown).
 */
+
 
 /* no diagnosis */
 /* games identification rules */
@@ -48,7 +49,7 @@ verify(role),verify(fantasy),verify(action),verify(third_person).
 dark_souls :-
 verify(survival),verify(terror),verify(third_person).
 
-minecraft :- verify(survival)
+minecraft :- verify(survival).
 
 fps :- verify(first_person),verify(shooter).
 online :- verify(online),verify(multiplayer).
@@ -73,3 +74,14 @@ verify(S):-
 undo :- retract(yes(_)),fail.
 undo :- retract(no(_)),fail.
 undo.
+
+agregar :-
+write('Do you want to add the game you are looking for?'),
+read(Response),nl,
+((Response == yes ; Response == y)-> agregar_ok ; undo).
+
+agregar_ok :-
+write('The name of the game is: '),nl,
+read(Game),
+write('What attribute the game has?'),nl,
+read(Att),
